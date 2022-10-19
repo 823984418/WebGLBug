@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebGLBug</title>
+</head>
+<body>
+<code id="info"></code>
+<canvas id="canvas"></canvas>
+<script>
+    let canvas = document.querySelector("#canvas");
+    let gl = canvas.getContext("webgl2");
+    let p = gl.createProgram();
+    let vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, `#version 300 es
+            flat int a;
+            void main() {
+                a = 1;
+            }
+        `);
+    gl.compileShader(vs);
+    gl.attachShader(p, vs);
+    let fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, `#version 300 es
+            void main() {
+            }
+        `);
+    gl.compileShader(fs);
+    gl.attachShader(p, fs);
+    gl.linkProgram(p);
+    let info = gl.getProgramInfoLog(p);
+    document.querySelector("#info").innerText = info;
+</script>
+</body>
+</html>
